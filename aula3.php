@@ -59,7 +59,7 @@
     <?php 
   
     	// Comando SQL para buscar os dados de todos os empregados
-      $sql = "SELECT nome_empregado, rua, cidade FROM empresa";
+      $sql = "SELECT nome_empregado, rua, cidade FROM empregados";
 
       // Executnando o SQL
       $result = $conn->query($sql);

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
   
   /*
     Banco de Dados II - Favenorte
@@ -23,6 +23,27 @@
     die("A conexão com o banco de dados falhou: " . $conn->connect_error);
   } 
 
+  /* Definindo a codificação para utf8 */
+  if (!$conn->set_charset("utf8")) {
+      printf("Error ao definir o conjunto de caracteres para utf8: %s\n", $conn->error);
+  } 
+
+  // se alguma pesquisa foi feita busca no banco.
+  if(isset($_POST['busca']) )
+  {
+      // Comando SQL para buscar os dados dos empregados pelo nome digitado
+      $sql = "SELECT nome_empregado, rua, cidade FROM empregados WHERE nome_empregado LIKE '%".$_POST['busca']."%' ";
+
+      // Executnando o SQL
+      $result = $conn->query($sql);
+  }else
+  {
+       // Comando SQL para buscar os dados de todos os empregados
+      $sql = "SELECT nome_empregado, rua, cidade FROM empregados";
+
+      // Executnando o SQL
+      $result = $conn->query($sql);
+  }
 
 ?>
 
@@ -68,7 +89,11 @@
     </form>
   </div>
 
- 
+ <div class="info">
+    <div class="text-right">
+      <?php echo $result->num_rows.' regsitros encontrados.'; ?>
+   </div>
+ </div>
 
   <div class="table-responsive">
     <table class="table table-bordered">
@@ -85,11 +110,7 @@
 
         <?php 
       
-          // Comando SQL para buscar os dados de todos os empregados
-          $sql = "SELECT nome_empregado, rua, cidade FROM empregados";
-
-          // Executnando o SQL
-          $result = $conn->query($sql);
+         
 
           // Checamos se a consulta encontrou algum resultado.
           // $result->num_rows retorna o número de linhas (registros) encontrados na consulta.
@@ -104,7 +125,7 @@
                 echo "<tr>";
                 echo "<td>".$row["nome_empregado"]."</td>";
                 echo "<td>".$row["rua"]."</td>";
-                echo "<td>".$row["cida"]."</td>";
+                echo "<td>".$row["cidade"]."</td>";
                 echo "</tr>";
             }
           } else {
